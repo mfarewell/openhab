@@ -39,6 +39,8 @@ public class HeatmiserPRTHW extends HeatmiserThermostat {
 
         dcbWaterState = data[45];
 
+        dcbRunMode = data[32];
+
         return true;
     }
 

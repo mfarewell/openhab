@@ -312,6 +312,9 @@ public class HeatmiserBinding extends AbstractActiveBinding<HeatmiserBindingProv
                         case ONOFF:
                             state = thermostat.getOnOffState(provider.getItemType(itemName));
                             break;
+                        case RUNMODE:
+                            state = thermostat.getRunMode(provider.getItemType(itemName));
+                            break;
                         case HEATSTATE:
                             state = thermostat.getHeatState(provider.getItemType(itemName));
                             break;

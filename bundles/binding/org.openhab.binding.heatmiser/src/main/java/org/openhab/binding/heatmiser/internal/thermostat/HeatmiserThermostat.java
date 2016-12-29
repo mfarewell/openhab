@@ -43,6 +43,7 @@ public class HeatmiserThermostat {
     protected byte dcbState;
     protected byte dcbHeatState;
     protected byte dcbWaterState;
+    protected byte dcbRunMode;
     protected double dcbRoomTemperature;
     protected double dcbFrostTemperature;
     protected double dcbFloorTemperature;
@@ -73,7 +74,7 @@ public class HeatmiserThermostat {
     /*
      * Sets the new packet data for the thermostat This function processes the
      * basic data and checks the validity of the incoming data
-     * 
+     *
      * @param in Input data byte array
      */
     public boolean setData(byte in[]) {
@@ -188,7 +189,7 @@ public class HeatmiserThermostat {
 
     /**
      * Produces a packet to poll this thermostat
-     * 
+     *
      * @return byte array with the packet
      */
     public byte[] pollThermostat() {
@@ -197,7 +198,7 @@ public class HeatmiserThermostat {
 
     /**
      * Formats a command to the thermostat
-     * 
+     *
      * @param function The command function
      * @param command The openHAB command parameter
      * @return byte array with the command packet
@@ -225,7 +226,7 @@ public class HeatmiserThermostat {
 
     /**
      * Command to set the room temperature
-     * 
+     *
      * @param command
      * @return byte array with the command data
      */
@@ -251,7 +252,7 @@ public class HeatmiserThermostat {
 
     /**
      * Sets the frost temperature
-     * 
+     *
      * @param command
      * @return byte array with the command packet
      */
@@ -272,7 +273,7 @@ public class HeatmiserThermostat {
 
     /**
      * Sets the holiday time
-     * 
+     *
      * @param command time to set holiday mode - specified in days
      * @return command string to send to thermostat
      */
@@ -312,7 +313,7 @@ public class HeatmiserThermostat {
 
     /**
      * Sets the current time for the thermostat
-     * 
+     *
      * @param command
      * @return command string to send to thermostat
      */
@@ -330,7 +331,7 @@ public class HeatmiserThermostat {
 
     /**
      * Enables or disables the thermostat
-     * 
+     *
      * @param command
      * @return
      */
@@ -358,7 +359,7 @@ public class HeatmiserThermostat {
 
     /**
      * Returns the current room temperature
-     * 
+     *
      * @param itemType
      * @return
      */
@@ -373,7 +374,7 @@ public class HeatmiserThermostat {
 
     /**
      * Returns the current frost temperature
-     * 
+     *
      * @param itemType
      * @return
      */
@@ -388,7 +389,7 @@ public class HeatmiserThermostat {
 
     /**
      * Returns the current floor temperature
-     * 
+     *
      * @param itemType
      * @return
      */
@@ -405,7 +406,7 @@ public class HeatmiserThermostat {
      * Returns the current state of the thermostat
      * This is a consolidated status that brings together a number of
      * status registers within the thermostat.
-     * 
+     *
      * @param itemType
      * @return
      */
@@ -431,7 +432,7 @@ public class HeatmiserThermostat {
 
     /**
      * Returns the current heating state
-     * 
+     *
      * @param itemType
      * @return
      */
@@ -445,6 +446,18 @@ public class HeatmiserThermostat {
 
         // Default to DecimalType
         return DecimalType.valueOf(Integer.toString(dcbState));
+    }
+
+    public State getRunMode(Class<? extends Item> itemType) {
+        if (itemType == StringItem.class) {
+            return dcbRunMode == 1 ? StringType.valueOf("ON") : StringType.valueOf("OFF");
+        }
+        if (itemType == SwitchItem.class) {
+            return dcbRunMode == 1 ? OnOffType.ON : OnOffType.OFF;
+        }
+
+        // Default to DecimalType
+        return DecimalType.valueOf(Integer.toString(dcbRunMode));
     }
 
     public State getWaterState(Class<? extends Item> itemType) {
